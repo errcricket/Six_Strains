@@ -4,7 +4,7 @@ Date:	10.30.2011
 Modification Date: 10.23.2015
 
 Purpose: To extact information from GenBank file and place the information to a new csv file. Output file should have the following format:
-Bacteria\tStrain\tLocus_tag\tCDS_Region\tGene_info\tSequence\tProduct\n.
+ID\tBacteria\tStrain\tLocus_tag\tCDS_Region\tGene_info\tSequence\tProduct\n.
 '''
 
 import Bio
@@ -27,7 +27,82 @@ from Bio.SeqFeature import Reference, SeqFeature, FeatureLocation
 from Bio.Alphabet import IUPAC
 from StringIO import StringIO
 
-lineStarter = '>' #Arb requires all non-sequence lines to begin with '>', this value will never change 
+
+fileList = [] #list for gb files in folder
+path = '.'
+ending='.gbf'
+
+fileList = ['Campy1147c/Campy1147c.gbf']#, 'Campy14076c/Campy14076c.gbf', 'Campy3194c/Campy3194c.gbf', 'Campy1246c/Campy1246c.gbf', 'Campy1147q/Campy1147q.gbf', 'Campy1285c/Campy1285c.gbf', 'Campy1188c/Campy1188c.gbf', 
+
+campy_dic = {}
+
+fileCounter = 0 #will increment +1 for each loop & will be the unique number
+uniqueID = str(fileCounter) #each record must have a unique ID
+for f in fileList:
+	with open(f, 'r') as inputFile:
+		record = SeqIO.parse(f, 'genbank').next()
+		featureCount = 0
+
+		for feat in record.features:
+			if feat.type == 'CDS':
+				#print(feat)
+				CDS = record.features#[featureCount]
+				print(CDS)
+
+#				for C in CDS:
+#					if C == 'locus_tag':
+#						print('erin')
+
+
+'''
+				#for CDS_qualifiers in CDS.qualifiers:
+					if CDS_qualifiers == 'locus_tag':
+						metaData['CDS_locus_tag'] = CDS.qualifiers['locus_tag']
+					if CDS_qualifiers == 'protein_id':
+						metaData['CDS_protein_id'] = CDS.qualifiers['protein_id']
+					if CDS_qualifiers == 'translation':
+						metaData['CDS_translation'] = CDS.qualifiers['translation']
+					if CDS_qualifiers == 'transl_table':
+						metaData['CDS_transl_table'] = CDS.qualifiers['transl_table']
+					if CDS_qualifiers == 'product':
+						metaData['CDS_product'] = CDS.qualifiers['product']
+					if CDS_qualifiers == 'note':
+
+'''
+#		print(record)
+#		print(len(record))
+		#print(dir(record))
+#		print(dir(record.name))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+for attributes in dir(record):#loops through all attributes in dir(record)
+	attributes = attributes.lower() #converts to lower case to avoid potential differences in file styles
+	if attributes == 'name':
+		metaData['locus'] = record.name 
+	if attributes == 'description':
+		metaData['definition'] = record.description
+	if attributes == 'id':
+		metaData['version'] = record.id
+'''
+
+
+	
  
 '''
 ########################TREE/NODE INFO###############################
@@ -42,6 +117,7 @@ getTaxonomy = 1
 os.chdir(current)
 '''
 
+'''
 databases = ['MFS'] #this is list of directory(ies) containing gb files
 
 for database in databases:
@@ -409,3 +485,4 @@ for database in databases:
 	OutputExonData.close()
 	OutputCDSData.close()
 	OutputCDSsubfeatureData.close()
+'''
