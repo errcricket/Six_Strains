@@ -39,6 +39,7 @@ def strip_it(string_name):
 
 for f in fileList:
 	nameOut = f.replace('gbf', 'txt')
+	strain = f.split('/')[0]
 	file_name = f.split('/')[1].replace('.gbf', '')
 	dna_type = f.split('_')[1]
 	#print(file_name, dna_type)
@@ -51,7 +52,7 @@ for f in fileList:
 	
 	with open(f, 'r') as inputFile:
 		with open(nameOut, 'w') as outputFile:
-			outputFile.write('Strain\tDNA_Source\tLocus_Tag\tProduct\tProtein_ID\tStrand\tTransl_Tbl\tSeq_AA\n')
+			outputFile.write('Filename\tStrain\tDNA_Source\tLocus_Tag\tProduct\tProtein_ID\tStrand\tTransl_Tbl\tSeq_AA\n')
 
 			record = SeqIO.parse(f, 'genbank').next()
 
@@ -59,7 +60,7 @@ for f in fileList:
 			for f in record.features:
 				if f.type == 'CDS':
 					CDS = record.features[featureCount]
-					string = file_name + '\t' + dna_type 
+					string = file_name + '\t' + strain + '\t' + dna_type 
 
 					for q in qualies:
 						if q in CDS.qualifiers:
@@ -75,7 +76,7 @@ for f in fileList:
 
 #This creates the corpus file
 with open('campy6_corpus_cds.txt', 'w') as outputFile:
-	outputFile.write('Strain\tDNA_Source\tLocus_Tag\tProduct\tProtein_ID\tStrand\tTransl_Tbl\tSeq_AA\n')
+	outputFile.write('Filename\tStrain\tDNA_Source\tLocus_Tag\tProduct\tProtein_ID\tStrand\tTransl_Tbl\tSeq_AA\n')
 	fileList = ['Campy1147c/Campy1147c_Chrom.txt', 'Campy1147q/Campy1147q_Chrom_1.txt', 'Campy1147q/Campy1147q_Chrom_2.txt', 'Campy1147q/Campy1147q_Chrom_3.txt', 'Campy1188c/Campy1188c_Chrom.txt', 'Campy1188c/Campy1188c_Plasmid.txt', 'Campy1246c/Campy1246c_Chrom.txt', 'Campy1246c/Campy1246c_Plasmid.txt', 'Campy1285c/Campy1285c_Chrom.txt', 'Campy14076c/Campy14076c_Chrom.txt', 'Campy3194c/Campy3194c_Chrom.txt', 'Campy3194c/Campy3194c_Plasmid.txt']
 	for f in fileList:
 		with open(f, 'r') as inputFile:
