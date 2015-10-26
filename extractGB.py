@@ -22,7 +22,7 @@ from Bio.SeqFeature import Reference, SeqFeature, FeatureLocation
 from Bio.Alphabet import IUPAC
 from StringIO import StringIO
 
-fileList = ['Campy1147c/Campy1147c_chrom.gbf', 'Campy1147q/Campy1147q_Chrom_1.gbf', 'Campy1147q/Campy1147q_Chrom_2.gbf', 'Campy1147q/Campy1147q_Chrom_3.gbf', 'Campy1188c/Campy1188c_Chrom.gbf', 'Campy1188c/Campy1188c_Plasmid.gbf', 'Campy1246c/Campy1246c_Chrom.gbf', 'Campy1246c/Campy1246c_Plasmid.gbf', 'Campy1285c/Campy1285c_Chrom.gbf', 'Campy14076c/Campy14076c_Chrom.gbf', 'Campy3194c/Campy3194c_Chrom.gbf', 'Campy3194c/Campy3194c_Plasmid.gbf']
+fileList = ['Campy1147c/Campy1147c_Chrom.gbf', 'Campy1147q/Campy1147q_Chrom_1.gbf', 'Campy1147q/Campy1147q_Chrom_2.gbf', 'Campy1147q/Campy1147q_Chrom_3.gbf', 'Campy1188c/Campy1188c_Chrom.gbf', 'Campy1188c/Campy1188c_Plasmid.gbf', 'Campy1246c/Campy1246c_Chrom.gbf', 'Campy1246c/Campy1246c_Plasmid.gbf', 'Campy1285c/Campy1285c_Chrom.gbf', 'Campy14076c/Campy14076c_Chrom.gbf', 'Campy3194c/Campy3194c_Chrom.gbf', 'Campy3194c/Campy3194c_Plasmid.gbf']
 #fileList = ['Campy1147c/Campy1147c.gbf', 'Campy14076c/Campy14076c.gbf', 'Campy3194c/Campy3194c.gbf', 'Campy1246c/Campy1246c.gbf', 'Campy1147q/Campy1147q.gbf', 'Campy1285c/Campy1285c.gbf', 'Campy1188c/Campy1188c.gbf']
 campy_dic = {}
 
@@ -39,10 +39,10 @@ def strip_it(string_name):
 
 for f in fileList:
 	nameOut = f.replace('gbf', 'txt')
-	file_name = f.split('/')[0]
-	print(file_name)
+	file_name = f.split('/')[1].replace('.gbf', '')
 	dna_type = f.split('_')[1]
-	print(file_name, dna_type)
+	#print(file_name, dna_type)
+	print(file_name)
 	
 	if dna_type.startswith('C'):
 		dna_type = 'Chromosome'
@@ -76,7 +76,7 @@ for f in fileList:
 #This creates the corpus file
 with open('campy6_corpus_cds.txt', 'w') as outputFile:
 	outputFile.write('Strain\tDNA_Source\tLocus_Tag\tProduct\tProtein_ID\tStrand\tTransl_Tbl\tSeq_AA\n')
-	fileList = ['Campy1147c/Campy1147c_chrom.txt', 'Campy1147q/Campy1147q_Chrom_1.txt', 'Campy1147q/Campy1147q_Chrom_2.txt', 'Campy1147q/Campy1147q_Chrom_3.txt', 'Campy1188c/Campy1188c_Chrom.txt', 'Campy1188c/Campy1188c_Plasmid.txt', 'Campy1246c/Campy1246c_Chrom.txt', 'Campy1246c/Campy1246c_Plasmid.txt', 'Campy1285c/Campy1285c_Chrom.txt', 'Campy14076c/Campy14076c_Chrom.txt', 'Campy3194c/Campy3194c_Chrom.txt', 'Campy3194c/Campy3194c_Plasmid.txt']
+	fileList = ['Campy1147c/Campy1147c_Chrom.txt', 'Campy1147q/Campy1147q_Chrom_1.txt', 'Campy1147q/Campy1147q_Chrom_2.txt', 'Campy1147q/Campy1147q_Chrom_3.txt', 'Campy1188c/Campy1188c_Chrom.txt', 'Campy1188c/Campy1188c_Plasmid.txt', 'Campy1246c/Campy1246c_Chrom.txt', 'Campy1246c/Campy1246c_Plasmid.txt', 'Campy1285c/Campy1285c_Chrom.txt', 'Campy14076c/Campy14076c_Chrom.txt', 'Campy3194c/Campy3194c_Chrom.txt', 'Campy3194c/Campy3194c_Plasmid.txt']
 	for f in fileList:
 		with open(f, 'r') as inputFile:
 			inputFile.readline()
