@@ -7,16 +7,22 @@ Purpose: Compare the campy strains for unique genes (Product), gene counts, ...(
 
 import sys
 import os
-import Bio
+#import Bio
 from collections import defaultdict
+from itertools import permutations
+
+class NestedDict(dict):
+	def __getitem__(self, key):
+		if key in self: return self.get(key)
+		return self.setdefault(key, NestedDict())
 
 def compute_jaccard_index(set_1, set_2):
     n = len(set_1.intersection(set_2))
     return n / float(len(set_1) + len(set_2) - n)
     #return round(n / float(len(set_1) + len(set_2) - n), 4)
 
-campyFile_dic = {}
-strain_dic = {}
+campyFile_dic = {} #holds genes for each chromosome & plasmids separately (even if from the same strain)
+strain_dic = {} #holds genes for each strain (plasmid & chromosome collectively)
 
 #Create dictionary for each strain (including plasmids), & for each file (plas-chrom are separate)
 #headers <- 'Filename"   "Strain"     "DNA_Source" "Locus_Tag"  "Product"    "Protein_ID" "Strand"     "Transl_Tbl" "Seq_AA'
@@ -109,6 +115,44 @@ with open('campy_statistics.txt', 'w') as outputFile:
 
 print(gene_dic)
 
+
+missing = {}
+def find_uniqueGenes(strain1, strain2):
+	for strain1, strain2 in permutations(genes, 2): 
+		 missing.setdefault(strain1, {})[strain2] = genes[strain1] - genes[strain2]
+
+	  
+#	strain_order = ['Campy1147q', 'Campy1285c', 'Campy1188c', 'Campy1246c', 'Campy3194c', 'Campy1147c', 'Campy14076c']
+genes = { 
+    'Campy1147q':  set(strain_dic['Campy1147q']),
+    'Campy1285c':  set(strain_dic['Campy1285c']),
+    'Campy1188c':  set(strain_dic['Campy1188c']),
+    'Campy1246c':  set(strain_dic['Campy1246c']),
+    'Campy3194c':  set(strain_dic['Campy3194c']),
+    'Campy1147c':  set(strain_dic['Campy1147c']),
+    'Campy14076c': set(strain_dic['Campy14076c']),
+}
+
+for c in genes:
+	for g in genes:
+		find_uniqueGenes(genes[c], genes[g])
+
+for m in missing:
+	print(m, len(missing[m]), len(m))
+#print(missing)
+#v
+#for strain1, strain2 in permutations(genes, 2): 
+#    missing.setdefault(strain1, {})[strain2] = genes[strain1] - genes[strain2]
+#
+#assert len(missing) == 3
+#assert missing['strain1']['strain2'] == set([1, 2]) 
+#assert missing['strain1']['strain3'] == set([1, 2, 3]) 
+#assert missing['strain2']['strain1'] == set([4, 5]) 
+#assert missing['strain2']['strain3'] == set([3, 4]) 
+#assert missing['strain3']['strain2'] == set([6, 7]) 
+
+
+
 '''
 #########Computing Jaccard Coefficient
 with open('jaccard_r.txt', 'w') as outputFile:
@@ -139,3 +183,10 @@ with open('jaccard_r.txt', 'w') as outputFile:
 			outputFile_2.write(string + '\n')
 
 '''
+#eggs = NestedDict()
+#eggs[1][2][3][4][5]
+#print(eggs)
+
+
+
+
