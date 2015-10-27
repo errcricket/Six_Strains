@@ -8,6 +8,7 @@ Purpose: Compare the campy strains for unique genes (Product), gene counts, ...(
 import sys
 import os
 import Bio
+from collections import defaultdict
 
 def compute_jaccard_index(set_1, set_2):
     n = len(set_1.intersection(set_2))
@@ -82,19 +83,31 @@ with open('campy_statistics.txt', 'w') as outputFile:
 #			print(index, o)
 #			index+=1
 
-	for index, c in enumerate(strain_dic):
-		index2 = index+1
-		while index2 < len(strain_order):
-			for i in set(strain_dic[c]):
-				if i not in set(strain_dic[strain_order[index2]]):
-					dic_genes[c][strain_order[index2]].append(i)
-			index2+=1
-			print(dic_genes)
+#	for index, c in enumerate(strain_dic):
+#		index2 = index+1
+#		while index2 < len(strain_order):
+#			for i in set(strain_dic[c]):
+#				if i not in set(strain_dic[strain_order[index2]]):
+#					dic_genes[c][strain_order[index2]].append(i)
+#			index2+=1
+#			print(dic_genes)
 #		for i in set(campyFile_dic[c]):
 #			for a in set(campyFile_dic):
 #				if i not in set(campyFile_dic[a]) and i not in 
 #					print(i)
 		
+
+	gene_dic = defaultdict(lambda: defaultdict(dict))
+	for c in strain_dic:
+		if c not in gene_dic:
+			#gene_dic[c] = {}
+			for g in gene_dic:
+				if g != c:
+					for i in set(gene_dic[c]):	
+						if i not in gene_dic[g]:
+							gene_dic[c][g].append(i)
+
+print(gene_dic)
 
 '''
 #########Computing Jaccard Coefficient
