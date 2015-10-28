@@ -20,8 +20,8 @@ png(filename=paste('Plasmid_Chromo_Histogram.png', sep=''), width=3750,height=27
 par(mar=c(9.5,4.3,4,2))
 print(h <- ggplot(myDF, aes(x=Filename, stat='bin')) + geom_bar() +
 		labs(title='Gene Count by Campy Strain DNA Source', x='Campy. Strain', y='Gene Count\n') +
-    	guides(title.theme = element_text(size=15, angle = 90)) + theme(legend.text=element_text(size=13)) +
-		theme(axis.text.x=element_text(angle=90, size=14, hjust=1)) )
+    	guides(title.theme = element_text(size=15, angle = 90)) + theme(legend.text=element_text(size=15), text = element_text(size=18)) +
+		theme(axis.text.x=element_text(angle=45, size=16, hjust=1), axis.text.y=element_text(size=16), legend.position='none', plot.title = element_text(size=22)) )
 ##########################################################################
 
 ##PRINT GENE COUNT HISTOGRAM: Graph depicts contribution of strain's genes from plasmids (if applicable) and chromosomes together 
