@@ -36,7 +36,25 @@ print(h <- ggplot(myDF, aes(x=Strain, stat='bin', fill=factor(Filename))) + geom
 
 png(filename=paste('X_Pangenome_Histogram.png', sep=''), width=3750,height=2750,res=300)
 par(mar=c(9.5,4.3,4,2))
-print(h <- ggplot(myDF, aes(x=Strain, fill=Filename)) + geom_bar()) # +
+print(h <- ggplot(myDF, aes(x=Strain, fill=Filename), label=Filename) + geom_bar() +
+		labs(title='Gene Count by Strain Pangenome', x='Campy. Strain', y='Gene Count\n') +
+		geom_text(aes(y=Strain, label=Filename), size=5) + 
+    	guides(title.theme = element_text(size=15, angle = 90)) + theme(legend.text=element_text(size=13)) +
+		theme(axis.text.x=element_text(angle=90, size=14, hjust=1), legend.position='none') )
+
+png(filename=paste('Z_Pangenome_Histogram.png', sep=''), width=3750,height=2750,res=300)
+par(mar=c(9.5,4.3,4,2))
+print(p <- ggplot(myDF, aes(x = Strain, stat='bin', fill=Filename)) ) #+ geom_text(label=myDF$Filename))
+#print(p <- ggplot(myDF, aes(x = Strain, y = Frequency)) +
+#     geom_bar(aes(fill = Filename), stat="identity") +
+ #    geom_text(aes(label = Filename, y=Strain), size = 3))
+
+
+
+#png(filename=paste('X_Pangenome_Histogram.png', sep=''), width=3750,height=2750,res=300)
+#par(mar=c(9.5,4.3,4,2))
+#print(h <- ggplot(myDF, aes(x=Strain, fill=Filename)) + geom_bar(stat="identity", ymin=0, aes(y=value, ymax=value), position="dodge") +
+#geom_text(aes(x=Strain, y=value, ymax=value, label=value, hjust=ifelse(sign(value)>0, 1, 0)), position = position_dodge(width=1)) + scale_y_continuous(labels = percent_format()))
 #print(h <- geom_point(myDF, aes(x=Strain, stat='bin', colour=factor(Filename)), size = 3) + 
 #		theme(axis.text.x=element_text(angle=90, size=5, hjust=1), legend.position='none') + 
 #		labs(title='Gene Count by Strain Pangenome', x='Campy. Strain', y='Gene Count\n') + 
