@@ -67,8 +67,36 @@ with open('campy_statistics.txt', 'w') as outputFile:
 ##########################################################################
 
 
-
+##COMPUTING JACCARD SIMILARITY COEFFICIENT
 --------------------------------------------------------------------------
+with open('jaccard_r.txt', 'w') as outputFile:
+	outputFile.write('Strain1\tStrain2\tJaccard_C\n')
+	#Compute Jaccard Similarity Coefficient across the pangenomes for each strain
+	print('set1\tset2\tJaccard Similarity Coefficient')
+	with open('jaccard_campyPG.txt', 'w') as outputFile_1:
+		for c in campyFile_dic:
+			string = ''
+			for r in campyFile_dic:
+				jaccard = compute_jaccard_index(set(campyFile_dic[c]), set(campyFile_dic[r]))
+			#	print(c, r, jaccard)
+				string = string + '\t' + str(round(jaccard, 3))
+				string = string.lstrip()
+			outputFile_1.write(string + '\n')
+
+	#Compute Jaccard Similarity Coefficient for the files (Plasmid/Chrom) are separated)
+	with open('jaccard_campyStrain.txt', 'w') as outputFile_2:
+		for c in strain_dic:
+			string = ''
+			for r in strain_dic:
+				jaccard = compute_jaccard_index(set(strain_dic[c]), set(strain_dic[r]))
+				print(c, r, jaccard)
+				string = string.lstrip()
+				string = string + '\t' + str(round(jaccard, 3))
+				#string = string + '\t' + str(jaccard)
+				outputFile.write(c + '\t' + r + '\t' + str(jaccard) + '\n')
+			outputFile_2.write(string + '\n')
+##########################################################################
+
 
 	#initialize all dictionaries to hold unique entries (not the most efficient method)
 #	dic_genes = {}
@@ -206,35 +234,6 @@ print(dic_1147q[1])
 ##assert missing['strain2']['strain1'] == set([4, 5]) 
 ##assert missing['strain2']['strain3'] == set([3, 4]) 
 ##assert missing['strain3']['strain2'] == set([6, 7]) 
-#
-##########Computing Jaccard Coefficient
-with open('jaccard_r.txt', 'w') as outputFile:
-	outputFile.write('Strain1\tStrain2\tJaccard_C\n')
-	#Compute Jaccard Similarity Coefficient across the pangenomes for each strain
-	print('set1\tset2\tJaccard Similarity Coefficient')
-	with open('jaccard_campyPG.txt', 'w') as outputFile_1:
-		for c in campyFile_dic:
-			string = ''
-			for r in campyFile_dic:
-				jaccard = compute_jaccard_index(set(campyFile_dic[c]), set(campyFile_dic[r]))
-			#	print(c, r, jaccard)
-				string = string + '\t' + str(round(jaccard, 3))
-				string = string.lstrip()
-			outputFile_1.write(string + '\n')
-
-	#Compute Jaccard Similarity Coefficient for the files (Plasmid/Chrom) are separated)
-	with open('jaccard_campyStrain.txt', 'w') as outputFile_2:
-		for c in strain_dic:
-			string = ''
-			for r in strain_dic:
-				jaccard = compute_jaccard_index(set(strain_dic[c]), set(strain_dic[r]))
-				print(c, r, jaccard)
-				string = string.lstrip()
-				string = string + '\t' + str(round(jaccard, 3))
-				#string = string + '\t' + str(jaccard)
-				outputFile.write(c + '\t' + r + '\t' + str(jaccard) + '\n')
-			outputFile_2.write(string + '\n')
-
 ##eggs = NestedDict()
 ##eggs[1][2][3][4][5]
 ##print(eggs)
