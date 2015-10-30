@@ -109,14 +109,19 @@ with open('campy_statistics.txt', 'a') as outputFile:
 def find_uniqueGenes(dictionary, primaryKey, strainList):
    dictionary[primaryKey] = {}
    for s in strainList:
-		if s not in dictionary[primaryKey]:
-			dictionary[primaryKey][s] = []
-			
-		for i in set(strain_dic[primaryKey]):
-			if i not in strain_dic[s]:
+		if s not in dictionary:
+			dictionary[primaryKey][s] = [] 
+
+		for i in strain_dic[s]:
+			if i not in strain_dic[primaryKey]:
 				dictionary[primaryKey][s].append(i)
-		
 	return dictionary
+			
+#		for i in set(strain_dic[primaryKey]):
+#			if i not in strain_dic[s]:
+#				dictionary[primaryKey][s].append(i)
+		
+#	return dictionary
 #	print(strain_dic[primaryKey])
       #print(strain_dic[s])
 
