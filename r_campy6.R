@@ -11,30 +11,27 @@ library(scales)
 original.parameters=par()
 options(width=9999)
 
-
 myDF <- read.csv('campy6_corpus_cds.txt', header=T, sep='\t') 
-print(names(myDF))
-print(length(names(myDF)))
+#print(names(myDF)) #[1] "Filename"   "Strain"     "DNA_Source" "Locus_Tag"  "Product"    "Transl_Tbl" "Note"       "Seq_AA"     "Protein_ID"
 
-#[1] "FileName"   "Locus_Tag"  "Product"    "Protein_ID" "Strand"     "Transl_Tbl" "Seq_AA"    
-
-png(filename=paste('Histogram.png', sep=''), width=750,height=550,res=72)
+##PRINT GENE COUNT HISTOGRAM: Graph depicts contribution of strain's genes from plasmids (if applicable) and chromosomes separately. 
+#--------------------------------------------------------------------------
+png(filename=paste('Plasmid_Chromo_Histogram.png', sep=''), width=3750,height=2750,res=300)
 par(mar=c(9.5,4.3,4,2))
-print(h <- ggplot(myDF, aes(x=FileName, stat='bin')) + geom_bar() +
-		labs(title='Gene Count by Campy Strain', x='Campy. Strain', y='Gene Count\n') +
-    	guides(title.theme = element_text(size=15, angle = 90)) + theme(legend.text=element_text(size=13)) +
-		theme(axis.text.x=element_text(angle=90, size=14, hjust=1)) )
-    	#guides(fill = guide_legend(title = 'Amino Acid', title.theme = element_text(size=15, angle = 0))) + theme(legend.text=element_text(size=13))  +
-#    theme_minimal() + theme(text=element_text(size=14)) + theme(axis.text.x=element_text(size=14), axis.text.y=element_text(size=14)) +
-#   theme(panel.grid.major = element_line(size = .3, color = 'grey'), axis.line = element_line(size=.5, color = 'black'), text = element_text(size=16)) +
-#	scale_y_continuous(label=scientific_format()) )
-#, stat='bin', fill=factor(Locus_Tag)) 
-#+ geom_histogram() +# facet_wrap(~ variable) + #scale_fill_brewer(palette='Blues') +
+print(h <- ggplot(myDF, aes(x=Filename, stat='bin')) + geom_bar() +
+		labs(title='Gene Count by Campy Strain DNA Source', x='Campy. Strain', y='Gene Count\n') +
+    	guides(title.theme = element_text(size=15, angle = 90)) + theme(legend.text=element_text(size=15), text = element_text(size=18)) +
+		theme(axis.text.x=element_text(angle=45, size=16, hjust=1), axis.text.y=element_text(size=16), legend.position='none', plot.title = element_text(size=22)) )
+##########################################################################
 
-
-uLocus = sort(unique(unlist(myDF$Locus_Tag, use.names = FALSE)))
-png(filename=paste('XHistogram.png', sep=''), width=750,height=550,res=72)
+##PRINT GENE COUNT HISTOGRAM: Graph depicts contribution of strain's genes from plasmids (if applicable) and chromosomes together 
+#--------------------------------------------------------------------------
+png(filename=paste('Pangenome_Histogram.png', sep=''), width=3750,height=2750,res=300)
 par(mar=c(9.5,4.3,4,2))
-print(x <- qplot(factor(FileName), data=myDF, geom='bar', fill=factor(length(uLocus))))
-#print(x <- qplot(factor(FileName), data=myDF, geom='bar', fill=factor(Locus_Tag)))
+print(h <- ggplot(myDF, aes(x=Strain, stat='bin', fill=factor(Filename))) + geom_bar() +
+		labs(title='Gene Count by Strain Pangenome', x='Campylobacter Strains', y='Gene Count\n') +
+    	guides(title.theme = element_text(size=15, angle = 90)) + theme(legend.text=element_text(size=15), text = element_text(size=18)) +
+		theme(axis.text.x=element_text(angle=45, size=16, hjust=1), axis.text.y=element_text(size=16), legend.position='none', plot.title = element_text(size=22)) )
+##########################################################################
+
 dev.off()

@@ -52,8 +52,7 @@ for f in fileList:
 	
 	with open(f, 'r') as inputFile:
 		with open(nameOut, 'w') as outputFile:
-			outputFile.write('Filename\tStrain\tDNA_Source\tLocus_Tag\tProduct\tProtein_ID\tStrand\tTransl_Tbl\tSeq_AA\n')
-
+			outputFile.write('Filename\tStrain\tDNA_Source\tLocus_Tag\tProduct\tTransl_Tbl\tNote\tSeq_AA\tProtein_ID\n')
 			record = SeqIO.parse(f, 'genbank').next()
 
 			featureCount = 0
@@ -76,7 +75,7 @@ for f in fileList:
 
 #This creates the corpus file
 with open('campy6_corpus_cds.txt', 'w') as outputFile:
-	outputFile.write('Filename\tStrain\tDNA_Source\tLocus_Tag\tProduct\tProtein_ID\tStrand\tTransl_Tbl\tSeq_AA\n')
+	outputFile.write('Filename\tStrain\tDNA_Source\tLocus_Tag\tProduct\tTransl_Tbl\tNote\tSeq_AA\tProtein_ID\n')
 	fileList = ['Campy1147c/Campy1147c_Chrom.txt', 'Campy1147q/Campy1147q_Chrom_1.txt', 'Campy1147q/Campy1147q_Chrom_2.txt', 'Campy1147q/Campy1147q_Chrom_3.txt', 'Campy1188c/Campy1188c_Chrom.txt', 'Campy1188c/Campy1188c_Plasmid.txt', 'Campy1246c/Campy1246c_Chrom.txt', 'Campy1246c/Campy1246c_Plasmid.txt', 'Campy1285c/Campy1285c_Chrom.txt', 'Campy14076c/Campy14076c_Chrom.txt', 'Campy3194c/Campy3194c_Chrom.txt', 'Campy3194c/Campy3194c_Plasmid.txt']
 	for f in fileList:
 		with open(f, 'r') as inputFile:
