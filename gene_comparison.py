@@ -16,6 +16,7 @@ import os
 #import Bio
 from collections import defaultdict
 from itertools import permutations
+import itertools
 
 #######################################################DEFINITIONS################################################################
 class NestedDict(dict):
@@ -34,7 +35,9 @@ def compute_jaccard_index(set_1, set_2):
 ##########################################################################
 campyFile_dic = {} #holds genes for each chromosome & plasmids separately (even if from the same strain)
 strain_dic = {} #holds genes for each strain (plasmid & chromosome collectively)
-with open('campy6_corpus_cds.txt', 'r') as inputFile: inputFile.readline()
+
+with open('campy6_corpus_cds.txt', 'r') as inputFile: 
+	inputFile.readline()
 	lines = inputFile.readlines()
 
 	for line in lines:
@@ -51,6 +54,18 @@ with open('campy6_corpus_cds.txt', 'r') as inputFile: inputFile.readline()
 #--------------------------------------------------------------------------
 	
 		
+##CREATE LIST CONTAINING ALL GENES: Will need this to find unique genes 
+##########################################################################
+total_genes = []
+
+for s in strain_dic:
+	total_genes.append(strain_dic[s])
+
+temp = list(itertools.chain(*total_genes)) #concat list entries for each strain_dic[x] into one big unique (set) list 
+total_genes = list(set(temp))
+#--------------------------------------------------------------------------
+
+
 ##CUSORY STATISTICS: Calculate total & unique number of genes (e.g., sets for both strains and files)
 ##########################################################################
 #NOTE: uncomment '#print' for testing purposes
@@ -67,7 +82,6 @@ with open('campy_statistics.txt', 'w') as outputFile:
 		#print(s, len(strain_dic[s]), len(set(strain_dic[s])))
 	#print('\n\n')
 #--------------------------------------------------------------------------
-
 
 ##COMPUTING JACCARD COEFFICIENT: Compute Jaccard Similarity Coefficient across each strain pangenome & each entity (plasmid, chromosome)
 ###################################################################################################
@@ -107,6 +121,7 @@ with open('campy_statistics.txt', 'a') as outputFile:
 ##This function fills arrays (dictionary[primaryKey][s]) w/ genes that are found in strain_dic[primaryKey] but not in strain_dic[subkey]
 def find_uniqueGenes(dictionary, primaryKey, strainList):
 	dictionary[primaryKey] = {} #initialize dic w/ primary key
+
 	for s in strainList:
 		if s not in dictionary[primaryKey]:
 			dictionary[primaryKey][s] = [] #initialize dic w/ primary key & subkey
@@ -115,6 +130,14 @@ def find_uniqueGenes(dictionary, primaryKey, strainList):
 			if i not in set(strain_dic[s]):
 				dictionary[primaryKey][s].append(i)
 
+	# Look for unique genes across all strains save the strain in question
+	dictionary[primaryKey]['Unique_to_all_strains'] = [] #initialize dic w/ primary key & subkey
+
+	for i in set(strain_dic[primaryKey]):
+		if i not in list(set(total_genes)):
+			dictionary[primaryKey]['Unique_to_all_strains'].append(i)
+			
+	print(dictionary[primaryKey]['Unique_to_all_strains'])
 	return dictionary
 		
 ###################################################################################################
@@ -124,160 +147,5 @@ strain_order = ['Campy1147q', 'Campy1285c', 'Campy1188c', 'Campy1246c', 'Campy31
 for index, s in enumerate(strain_order):
 	unique_genes = {}
 	unique_genes = find_uniqueGenes(unique_genes, s, strain_order[index+1:]) #blank after column indicates last entry
-	print(unique_genes)
-	print('')
-	
-#unique_genes = find_uniqueGenes(unique_genes, 'Campy1147q', strain_order[1:]) #blank after column indicates last entry
-#['Campy1147q']
-#['Campy1285c']
-#['Campy1188c']
-#['Campy1246c']
-#['Campy3194c']
-#['Campy1147c']
-
-
-##########################################################################
-#--------------------------------------------------------------------------
-	#initialize all dictionaries to hold unique entries (not the most efficient method)
-#	dic_genes = {}
-#	for c in campyFile_dic:
-#		if c == 'Campy1147q':
-#			dic_1147q['Campy1147q'] = {'Campy1285c':[], 'Campy1188c':[], 'Campy1246c':[],'Campy3194c':[],'Campy1147c':[],'Campy14076c':[]}
-#		if c == 'Campy1285':
-#			dic_1285c['Campy1285c'] = {'Campy1188c':[], 'Campy1246c':[],'Campy3194c':[],'Campy1147c':[],'Campy14076c':[]}
-#		if c == 'Campy1188c':
-#			dic_1188c['Campy1188c'] = {'Campy1246c':[],'Campy3194c':[],'Campy1147c':[],'Campy14076c':[]}
-#		if c == 'Campy1246':
-#			dic_1246c['Campy1246c'] = {'Campy3194c':[],'Campy1147c':[],'Campy14076c':[]}
-#		if c == 'Campy3194c':
-#			dic_3194c['Campy3194c'] = {'Campy1147c':[],'Campy14076c':[]}
-#		if c == 'Campy1147c':
-#			dic_1147c['Campy1147c'] = {'Campy14076c':[]}
-
-#dic_1147q['Campy1147q'] = {'Campy1285c':[], 'Campy1188c':[], 'Campy1246c':[],'Campy3194c':[],'Campy1147c':[],'Campy14076c':[]}
-#dic_1285c['Campy1285c'] = {'Campy1188c':[], 'Campy1246c':[],'Campy3194c':[],'Campy1147c':[],'Campy14076c':[]}
-#dic_1188c['Campy1188c'] = {'Campy1246c':[],'Campy3194c':[],'Campy1147c':[],'Campy14076c':[]}
-#dic_1246c['Campy1246c'] = {'Campy3194c':[],'Campy1147c':[],'Campy14076c':[]}
-#dic_3194c['Campy3194c'] = {'Campy1147c':[],'Campy14076c':[]}
-#dic_1147c['Campy1147c'] = {'Campy14076c':[]}
-
-
-
-	#Find genes unique to each strain/file.
-#	strain_order = ['Campy1147q', 'Campy1285c', 'Campy1188c', 'Campy1246c', 'Campy3194c', 'Campy1147c', 'Campy14076c']
-	#dic_genes = {}
-
-#	outputFile.write('\n\n----------------------Unique Genes----------------------\n')
-
-#dic_1147q = NestedDict()
-#dic_1285c = NestedDict()
-#dic_1188c = NestedDict()
-#dic_1246c = NestedDict()
-#dic_3194c = NestedDict()
-#dic_1147c = NestedDict()
-#
-#reusable_dic = NestedDict()
-#
-##def find_uniqueGenes(dic, master_strain, slave_strain):
-##	for s in strain_dic:
-##		for t in strain_dic:
-##			if s != t:
-##				dic[s][t]
-#
-##for s in strain_dic:
-#dic_1147q['Campy1285c']['Campy1188c']['Campy1246c']['Campy3194c']['Campy1147c']['Campy14076c']
-#dic_1285c['Campy1188c']['Campy1246c']['Campy3194c']['Campy1147c']['Campy14076c']
-#dic_1188c['Campy1246c']['Campy3194c']['Campy1147c']['Campy14076c']
-#dic_1246c['Campy3194c']['Campy1147c']['Campy14076c']
-#dic_3194c['Campy1147c']['Campy14076c']
-#dic_1147c['Campy14076c']
-#print(dic_1147q)
-#print(dic_1147q[1])
-#
-##strain_order = ['Campy1147q', 'Campy1285c', 'Campy1188c', 'Campy1246c', 'Campy3194c', 'Campy1147c', 'Campy14076c']
-##for s in strain_dic:
-##	find_uniqueGenes(reusable_dic, 
-##	resable_dic = NestedDict()
-#
-#	
-#
-#
-#
-##	for index, o in enumerate(strain_order):
-##	for index, o in enumerate(campyFile_dic):
-##		index = 0 #activating this line will make index start from 0 each time. Deactivating will access only remaining items.
-##		if o not in dic_genes:
-##			while index < len(strain_order):
-##				dic_genes[o][strain_order[index]] = []
-#
-##			print(index, o)
-##			index+=1
-#
-##	for index, c in enumerate(strain_dic):
-##		index2 = index+1
-##		while index2 < len(strain_order):
-##			for i in set(strain_dic[c]):
-##				if i not in set(strain_dic[strain_order[index2]]):
-##					dic_genes[c][strain_order[index2]].append(i)
-##			index2+=1
-##			print(dic_genes)
-##		for i in set(campyFile_dic[c]):
-##			for a in set(campyFile_dic):
-##				if i not in set(campyFile_dic[a]) and i not in 
-##					print(i)
-#		
-#
-##	gene_dic = defaultdict(lambda: defaultdict(dict))
-##	for c in strain_dic:
-##		if c not in gene_dic:
-##			#gene_dic[c] = {}
-##			for g in gene_dic:
-##				if g != c:
-##					for i in set(gene_dic[c]):	
-##						if i not in gene_dic[g]:
-##							gene_dic[c][g].append(i)
-#
-##print(gene_dic)
-#
-#
-##missing = {}
-##def find_uniqueGenes(strain1, strain2):
-##	for strain1, strain2 in permutations(genes, 2): 
-##		 missing.setdefault(strain1, {})[strain2] = genes[strain1] - genes[strain2]
-##
-##	  
-###	strain_order = ['Campy1147q', 'Campy1285c', 'Campy1188c', 'Campy1246c', 'Campy3194c', 'Campy1147c', 'Campy14076c']
-##genes = { 
-##    'Campy1147q':  set(strain_dic['Campy1147q']),
-##    'Campy1285c':  set(strain_dic['Campy1285c']),
-##    'Campy1188c':  set(strain_dic['Campy1188c']),
-##    'Campy1246c':  set(strain_dic['Campy1246c']),
-##    'Campy3194c':  set(strain_dic['Campy3194c']),
-##    'Campy1147c':  set(strain_dic['Campy1147c']),
-##    'Campy14076c': set(strain_dic['Campy14076c']),
-##}
-##
-##for c in genes:
-##	for g in genes:
-##		find_uniqueGenes(genes[c], genes[g])
-##
-##for m in missing:
-##	print(m, len(missing[m]), len(m))
-###print(missing)
-###v
-###for strain1, strain2 in permutations(genes, 2): 
-###    missing.setdefault(strain1, {})[strain2] = genes[strain1] - genes[strain2]
-###
-###assert len(missing) == 3
-###assert missing['strain1']['strain2'] == set([1, 2]) 
-###assert missing['strain1']['strain3'] == set([1, 2, 3]) 
-###assert missing['strain2']['strain1'] == set([4, 5]) 
-###assert missing['strain2']['strain3'] == set([3, 4]) 
-###assert missing['strain3']['strain2'] == set([6, 7]) 
-###eggs = NestedDict()
-###eggs[1][2][3][4][5]
-###print(eggs)
-##
-##
-##
-##
+	#print(unique_genes)
+	#print('')
