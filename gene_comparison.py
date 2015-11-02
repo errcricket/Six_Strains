@@ -53,18 +53,6 @@ with open('campy6_corpus_cds.txt', 'r') as inputFile:
 		campyFile_dic[sLine[0]].append(sLine[4]) #appends gene product
 #--------------------------------------------------------------------------
 	
-		
-##CREATE LIST CONTAINING ALL GENES: Will need this to find unique genes 
-##########################################################################
-total_genes = []
-
-for s in strain_dic:
-	total_genes.append(strain_dic[s])
-
-temp = list(itertools.chain(*total_genes)) #concat list entries for each strain_dic[x] into one big unique (set) list 
-total_genes = list(set(temp))
-#--------------------------------------------------------------------------
-
 
 ##CUSORY STATISTICS: Calculate total & unique number of genes (e.g., sets for both strains and files)
 ##########################################################################
@@ -118,9 +106,29 @@ with open('campy_statistics.txt', 'a') as outputFile:
 	outputFile.write(orderString.lstrip() + '\n')
 #--------------------------------------------------------------------------
 
+
+##CREATE LIST CONTAINING ALL GENES: Will need this to find unique genes 
+##########################################################################
+total_genes = []
+
+#for s in strain_dic:
+#	total_genes.append(strain_dic[s])
+
+#temp = list(itertools.chain(*total_genes)) #concat list entries for each strain_dic[x] into one big unique (set) list 
+#total_genes = list(set(temp))
+#--------------------------------------------------------------------------
+
+
+
+
 ##This function fills arrays (dictionary[primaryKey][s]) w/ genes that are found in strain_dic[primaryKey] but not in strain_dic[subkey]
-def find_uniqueGenes(dictionary, primaryKey, strainList):
+def find_uniqueGenes(dictionary, primaryKey, strainList, completeStrainList):
 	dictionary[primaryKey] = {} #initialize dic w/ primary key
+	total_genes = []
+
+	for s in completeStrainList:
+		if s != primaryKey:
+			total_genes.append(strain_dic[s])
 
 	for s in strainList:
 		if s not in dictionary[primaryKey]:
@@ -133,11 +141,17 @@ def find_uniqueGenes(dictionary, primaryKey, strainList):
 	# Look for unique genes across all strains save the strain in question
 	dictionary[primaryKey]['Unique_to_all_strains'] = [] #initialize dic w/ primary key & subkey
 
+	##############Cat gene entries from 6 (out of 7) strains, include unique entries only
+	temp = list(itertools.chain(*total_genes)) #concat list entries for each strain_dic[x] into one big unique (set) list 
+	total_genes = list(set(temp))
+#	print(len(total_genes))
+
 	for i in set(strain_dic[primaryKey]):
-		if i not in list(set(total_genes)):
+		if i not in total_genes:
 			dictionary[primaryKey]['Unique_to_all_strains'].append(i)
 			
-	print(dictionary[primaryKey]['Unique_to_all_strains'])
+	if primaryKey == 'Campy1285c':
+		print(dictionary[primaryKey]['Unique_to_all_strains'])
 	return dictionary
 		
 ###################################################################################################
@@ -146,6 +160,6 @@ strain_order = ['Campy1147q', 'Campy1285c', 'Campy1188c', 'Campy1246c', 'Campy31
 
 for index, s in enumerate(strain_order):
 	unique_genes = {}
-	unique_genes = find_uniqueGenes(unique_genes, s, strain_order[index+1:]) #blank after column indicates last entry
+	unique_genes = find_uniqueGenes(unique_genes, s, strain_order[index+1:], strain_order) #blank after column indicates last entry
 	#print(unique_genes)
 	#print('')
