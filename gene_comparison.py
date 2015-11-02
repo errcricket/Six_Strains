@@ -34,9 +34,7 @@ def compute_jaccard_index(set_1, set_2):
 ##########################################################################
 campyFile_dic = {} #holds genes for each chromosome & plasmids separately (even if from the same strain)
 strain_dic = {} #holds genes for each strain (plasmid & chromosome collectively)
-
-with open('campy6_corpus_cds.txt', 'r') as inputFile:
-	inputFile.readline()
+with open('campy6_corpus_cds.txt', 'r') as inputFile: inputFile.readline()
 	lines = inputFile.readlines()
 
 	for line in lines:
@@ -55,7 +53,7 @@ with open('campy6_corpus_cds.txt', 'r') as inputFile:
 		
 ##CUSORY STATISTICS: Calculate total & unique number of genes (e.g., sets for both strains and files)
 ##########################################################################
-#NOTE: uncomment '#' for testing purposes
+#NOTE: uncomment '#print' for testing purposes
 with open('campy_statistics.txt', 'w') as outputFile:
 	outputFile.write('CURSORY STATISTICS------------------\n')
 	outputFile.write('File\tTotal_Gene_Count\tTotal_Unique_Genes\n')
@@ -106,33 +104,30 @@ with open('campy_statistics.txt', 'a') as outputFile:
 	outputFile.write(orderString.lstrip() + '\n')
 #--------------------------------------------------------------------------
 
+##This function fills arrays (dictionary[primaryKey][s]) w/ genes that are found in strain_dic[primaryKey] but not in strain_dic[subkey]
 def find_uniqueGenes(dictionary, primaryKey, strainList):
-   dictionary[primaryKey] = {}
-   for s in strainList:
-		if s not in dictionary:
-			dictionary[primaryKey][s] = [] 
+	dictionary[primaryKey] = {} #initialize dic w/ primary key
+	for s in strainList:
+		if s not in dictionary[primaryKey]:
+			dictionary[primaryKey][s] = [] #initialize dic w/ primary key & subkey
 
-		for i in strain_dic[s]:
-			if i not in strain_dic[primaryKey]:
+		for i in set(strain_dic[primaryKey]):
+			if i not in set(strain_dic[s]):
 				dictionary[primaryKey][s].append(i)
-	return dictionary
-			
-#		for i in set(strain_dic[primaryKey]):
-#			if i not in strain_dic[s]:
-#				dictionary[primaryKey][s].append(i)
-		
-#	return dictionary
-#	print(strain_dic[primaryKey])
-      #print(strain_dic[s])
 
+	return dictionary
+		
 ###################################################################################################
 ##FIND UNIQUE GENES: #Find genes unique to each strain/file.
-unique_genes = {}
 strain_order = ['Campy1147q', 'Campy1285c', 'Campy1188c', 'Campy1246c', 'Campy3194c', 'Campy1147c', 'Campy14076c']
 
-
-unique_genes = find_uniqueGenes(unique_genes, 'Campy1147q', strain_order[1:]) #blank after column indicates last entry
-print(unique_genes)
+for index, s in enumerate(strain_order):
+	unique_genes = {}
+	unique_genes = find_uniqueGenes(unique_genes, s, strain_order[index+1:]) #blank after column indicates last entry
+	print(unique_genes)
+	print('')
+	
+#unique_genes = find_uniqueGenes(unique_genes, 'Campy1147q', strain_order[1:]) #blank after column indicates last entry
 #['Campy1147q']
 #['Campy1285c']
 #['Campy1188c']
