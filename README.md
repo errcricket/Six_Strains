@@ -1,4 +1,5 @@
-# Six_Strains
+# Six Campy Strains Project
+---------------------------
 
 
 ##The following scripts are 
