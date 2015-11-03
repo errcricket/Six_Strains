@@ -16,7 +16,7 @@ myDF <- read.csv('campy6_corpus_cds.txt', header=T, sep='\t')
 
 ##PRINT GENE COUNT HISTOGRAM: Graph depicts contribution of strain's genes from plasmids (if applicable) and chromosomes separately. 
 #--------------------------------------------------------------------------
-png(filename=paste('Plasmid_Chromo_Histogram.png', sep=''), width=3750,height=2750,res=300)
+png(filename=paste('images/Plasmid_Chromo_Histogram.png', sep=''), width=3750,height=2750,res=300)
 par(mar=c(9.5,4.3,4,2))
 print(h <- ggplot(myDF, aes(x=Filename, stat='bin')) + geom_bar() +
 		labs(title='Gene Count by Campy Strain DNA Source', x='Campy. Strain', y='Gene Count\n') +
@@ -26,7 +26,7 @@ print(h <- ggplot(myDF, aes(x=Filename, stat='bin')) + geom_bar() +
 
 ##PRINT GENE COUNT HISTOGRAM: Graph depicts contribution of strain's genes from plasmids (if applicable) and chromosomes together 
 #--------------------------------------------------------------------------
-png(filename=paste('Pangenome_Histogram.png', sep=''), width=3750,height=2750,res=300)
+png(filename=paste('images/Pangenome_Histogram.png', sep=''), width=3750,height=2750,res=300)
 par(mar=c(9.5,4.3,4,2))
 print(h <- ggplot(myDF, aes(x=Strain, stat='bin', fill=factor(Filename))) + geom_bar() +
 		labs(title='Gene Count by Strain Pangenome', x='Campylobacter Strains', y='Gene Count\n') +
