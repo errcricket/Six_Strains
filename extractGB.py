@@ -22,8 +22,8 @@ from Bio.SeqFeature import Reference, SeqFeature, FeatureLocation
 from Bio.Alphabet import IUPAC
 from StringIO import StringIO
 
-fileList = ['Campy1147c/Campy1147c_Chrom.gbf', 'Campy1147q/Campy1147q_Chrom_1.gbf', 'Campy1147q/Campy1147q_Chrom_2.gbf', 'Campy1147q/Campy1147q_Chrom_3.gbf', 'Campy1188c/Campy1188c_Chrom.gbf', 'Campy1188c/Campy1188c_Plasmid.gbf', 'Campy1246c/Campy1246c_Chrom.gbf', 'Campy1246c/Campy1246c_Plasmid.gbf', 'Campy1285c/Campy1285c_Chrom.gbf', 'Campy14076c/Campy14076c_Chrom.gbf', 'Campy3194c/Campy3194c_Chrom.gbf', 'Campy3194c/Campy3194c_Plasmid.gbf']
-#fileList = ['Campy1147c/Campy1147c.gbf', 'Campy14076c/Campy14076c.gbf', 'Campy3194c/Campy3194c.gbf', 'Campy1246c/Campy1246c.gbf', 'Campy1147q/Campy1147q.gbf', 'Campy1285c/Campy1285c.gbf', 'Campy1188c/Campy1188c.gbf']
+fileList = ['Campy1147c/Campy1147c_Chrom.gb', 'Campy1147q/Campy1147q_Chrom_1.gb', 'Campy1147q/Campy1147q_Chrom_2.gb', 'Campy1147q/Campy1147q_Chrom_3.gb', 'Campy1188c/Campy1188c_Chrom.gb', 'Campy1188c/Campy1188c_Plasmid.gb', 'Campy1246c/Campy1246c_Chrom.gb', 'Campy1246c/Campy1246c_Plasmid.gb', 'Campy1285c/Campy1285c_Chrom.gb', 'Campy14076c/Campy14076c_Chrom.gb', 'Campy3194c/Campy3194c_Chrom.gb', 'Campy3194c/Campy3194c_Plasmid.gb']
+#fileList = ['Campy1147c/Campy1147c.gb', 'Campy14076c/Campy14076c.gb', 'Campy3194c/Campy3194c.gb', 'Campy1246c/Campy1246c.gb', 'Campy1147q/Campy1147q.gb', 'Campy1285c/Campy1285c.gb', 'Campy1188c/Campy1188c.gb']
 campy_dic = {}
 
 fileCounter = 0 #will increment +1 for each loop & will be the unique number
@@ -38,9 +38,9 @@ def strip_it(string_name):
 	return string_name
 
 for f in fileList:
-	nameOut = f.replace('gbf', 'txt')
+	nameOut = f.replace('gb', 'txt')
 	strain = f.split('/')[0]
-	file_name = f.split('/')[1].replace('.gbf', '')
+	file_name = f.split('/')[1].replace('.gb', '')
 	dna_type = f.split('_')[1]
 	#print(file_name, dna_type)
 	print(file_name)
