@@ -7,13 +7,13 @@
 
 
 #####Step 1. python extractGB.py 
-######Extract data from genebank files, output saved to campy6_corpus_cds.txt
+######Extract data from genebank files, output saved to campy6_corpus_cds.txt (Filename Strain DNA_Source Locus_Tag Product Protein_ID Strand Transl_Tbl Seq_AA)
 
 #####Step 2. Rscript r_campy6.R  
 ######Script to create simple histogram of gene counts (by strain pangenome, by strain chromosome/plasmid)
 
 #####Step 3. python gene_comparison.py 
-######Script does cursory statistics, calculates Jaccard Similarity Coefficient (JSC) (uncommenting print statements & saving stdio to file called jaccard_r.txt, & find genes unique to a particular strain as well as comparing genes between two strains. Outputs statistics to campy_statitics.txt & unique genes to Unique_Genes.txt.
+######Script does cursory statistics, calculates Jaccard Similarity Coefficient (JSC) (uncommenting print statements & saving stdio to file called jaccard_r.txt), & find genes unique to a particular strain as well as comparing genes between two strains. Outputs statistics to campy_statitics.txt & unique genes to Unique_Genes.txt.
 
 #####Step 4. Rscript generate_Jaccard_heatMaps.r 
 ######Creates a (very lackluster) heatmap of JSCs. Colors currently hard to decipher between values
