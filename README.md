@@ -13,7 +13,7 @@
 ######Script to create simple histogram of gene counts (by strain pangenome, by strain chromosome/plasmid)
 
 #####Step 3. python gene_comparison.py 
-######Script does cursory statistics, calculates Jaccard Similarity Coefficient (JSC) (uncommenting print statements & saving stdio to file called jaccard_r.txt), & find genes unique to a particular strain as well as comparing genes between two strains. Outputs statistics to campy_statitics.txt & unique genes to Unique_Genes.txt.
+######Script does cursory statistics, calculates Jaccard Similarity Coefficient (JSC) (uncommenting print statements & saving stdio to file called jaccard_r.txt), & find genes unique to a particular strain as well as comparing genes between two strains. Outputs statistics to campy_statitics.txt & unique genes to Unique_Genes.txt, also creates text file containing extracted CDS info for each strain genbank file.
 
 #####Step 4. Rscript generate_Jaccard_heatMaps.r 
 ######Creates a (very lackluster) heatmap of JSCs. Colors currently hard to decipher between values
