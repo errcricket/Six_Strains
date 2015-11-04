@@ -18,4 +18,6 @@
 #####Step 4. Rscript generate_Jaccard_heatMaps.r 
 ######Creates a (very lackluster) heatmap of JSCs. Colors currently hard to decipher between values
 
-#####Additional Notes: As it currently stands, the genbank files are downloaded to a directory (of the same name). For this specific project, the files were split up into multiple files if a plasmid was present, or if the genome has not been fully assembled. All text files will be placed in the "Output" directory -- should add code to check for directory, and if not present, creates it.
+#####Additional Notes: Script only seems to work with .gbf extensions. As it currently stands, the genbank files are downloaded to a directory (of the same name). For this specific project, the files were split up into multiple files if a plasmid was present, or if the genome has not been fully assembled. All text files will be placed in the "Output" directory -- should add code to check for directory, and if not present, creates it. Running Python 2.7.10 :: Anaconda 2.3.0 (64-bit).
+
+
