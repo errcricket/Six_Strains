@@ -11,7 +11,7 @@ library(scales)
 original.parameters=par()
 options(width=9999)
 
-myDF <- read.csv('campy6_corpus_cds.txt', header=T, sep='\t') 
+myDF <- read.csv('Output/campy6_corpus_cds.txt', header=T, sep='\t') 
 #print(names(myDF)) #[1] "Filename"   "Strain"     "DNA_Source" "Locus_Tag"  "Product"    "Transl_Tbl" "Note"       "Seq_AA"     "Protein_ID"
 
 ##PRINT GENE COUNT HISTOGRAM: Graph depicts contribution of strain's genes from plasmids (if applicable) and chromosomes separately. 

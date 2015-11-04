@@ -36,7 +36,7 @@ def compute_jaccard_index(set_1, set_2):
 campyFile_dic = {} #holds genes for each chromosome & plasmids separately (even if from the same strain)
 strain_dic = {} #holds genes for each strain (plasmid & chromosome collectively)
 
-with open('campy6_corpus_cds.txt', 'r') as inputFile: 
+with open('Output/campy6_corpus_cds.txt', 'r') as inputFile: 
 	inputFile.readline()
 	lines = inputFile.readlines()
 
@@ -57,7 +57,7 @@ with open('campy6_corpus_cds.txt', 'r') as inputFile:
 ##CUSORY STATISTICS: Calculate total & unique number of genes (e.g., sets for both strains and files)
 ##########################################################################
 #NOTE: uncomment '#print' for testing purposes
-with open('campy_statistics.txt', 'w') as outputFile:
+with open('Output/campy_statistics.txt', 'w') as outputFile:
 	outputFile.write('CURSORY STATISTICS------------------\n')
 	outputFile.write('File\tTotal_Gene_Count\tTotal_Unique_Genes\n')
 	for c in campyFile_dic: #Chrome & Plasmids separate
@@ -73,7 +73,7 @@ with open('campy_statistics.txt', 'w') as outputFile:
 
 ##COMPUTING JACCARD COEFFICIENT: Compute Jaccard Similarity Coefficient across each strain pangenome & each entity (plasmid, chromosome)
 ###################################################################################################
-with open('campy_statistics.txt', 'a') as outputFile:
+with open('Output/campy_statistics.txt', 'a') as outputFile:
 	outputFile.write('\n\nJACCARD SIMILARITY COEFFICIENT (by chromosome & plasmid)------------------\n')
 #	outputFile.write('Strain1\tStrain2\tJaccard_C\n') #this is for r & will need to be in a separate file
 	#print('set1\tset2\tJaccard Similarity Coefficient')
@@ -142,7 +142,7 @@ def find_uniqueGenes(dictionary, primaryKey, strainList, completeStrainList):
 		
 strain_order = ['Campy1147q', 'Campy1285c', 'Campy1188c', 'Campy1246c', 'Campy3194c', 'Campy1147c', 'Campy14076c']
 
-with open('Unique_Genes.txt', 'w') as outputFile:
+with open('Output/Unique_Genes.txt', 'w') as outputFile:
 	for index, s in enumerate(strain_order):
 		outputFile.write('\n\nThe following genes are unique to strain ' + s + '\n')
 		unique_genes = {}

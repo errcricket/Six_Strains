@@ -7,7 +7,7 @@ library(reshape2)
 original.parameters=par()
 options(width=9999)
 
-myDF <- read.csv('jaccard_r.txt', header=T, sep='\t')
+myDF <- read.csv('Output/jaccard_r.txt', header=T, sep='\t')
 print(myDF)
 
 breaks <- cut(min(myDF$Jaccard_C):max(myDF$Jaccard_C), 3)
