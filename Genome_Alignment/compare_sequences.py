@@ -16,38 +16,94 @@ atgaatcc
 atgaatcc
 '''
 
+import os
+
+##FIND SEQUENCE NAME: Some strains are lacking ortholog. If lacking, header== >0
+##########################################################################
+def return_strain_name(header):
+	strains = ['Campy1147q', 'Campy1188c', 'Campy1147c', 'Campy3194c', 'Campy14076c', 'Campy1246c', 'Campy1285c']
+	header_strains = ['>0', '>1', '>2', '>3', '>4', '>5', '>6']
+	index = header_strains.index(header)
+	
+	return strains[index]
+#--------------------------------------------------------------------------
+
 ##CALCULATE SEQUENCE SIMILARITY: Find % shared nucleotides
 ##########################################################################
-def calculate_sequence_similarity(dictionary):
-	with open('/home/cricket/Projects/Campy_6Strains/Genome_Alignment/sequenceIdentity.txt', 'w') as outputFile:
-		outputFile.write('Ortholog_strain1\tOrtholog_strain2\tortholog_similarity\tRegion_strain1\tRegion_strain2\n')
+def calculate_sequence_similarity(dictionary, f_name):
+		strain1 = ''
+		strain2 = ''
+		region_strain1 = ''
+		region_strain2 = ''
+		identity = 0
 
 		for i in dictionary:
+			if len(i) == 2:
+				strain1 = return_strain_name(i)
+				region_strain1 = 'NA'
+
+			else:
+				strain1= i.rsplit(':')[2]
+				region_strain1 = i.rsplit(':')[1]
+
 			for j in dictionary:
+				if len(j) == 2:
+					strain2 = return_strain_name(j)
+					region_strain2 = 'NA'
+
+				else:
+					strain2= j.rsplit(':')[2]
+					region_strain2 = j.rsplit(':')[1]
+
 				track = 0
-				for index, k in enumerate(dictionary[j]):
-					if k == dictionary[i][index]:
-						track+=1
-				outputString = i + '\t' + j + '\t' + str(100*round(track/len(dictionary[i]), 4)) + '\n'
-				outputFile.write(outputString)
-	#			print(i, j, str(track/len(dictionary[i])))
+
+				if len(i) == 2 or len(j) == 2:
+					identity = 0
+			
+				else:
+					#if len(dictionary[i]) > len(dictionary[j]):
+					while len(dictionary[j]) < len(dictionary[i]):
+						dictionary[j] = dictionary[j] + '-'
+					#if len(dictionary[j]) > len(dictionary[i]):
+					while len(dictionary[i]) < len(dictionary[j]):
+						dictionary[i] = dictionary[i] + '-'
+
+					for index, k in enumerate(dictionary[j]):
+						if k == dictionary[i][index]:
+							track+=1
+
+					identity = 100*round(track/len(dictionary[i]), 4)
+
+				outputString = strain1 + '\t' + strain2 + '\t' + str(identity) + '\t' + region_strain1 + '\t' + region_strain2 + '\n'
+				f_name.write(outputString)
+#--------------------------------------------------------------------------
 
 dic = {}
 
-with open('/home/cricket/Projects/Campy_6Strains/Genome_Alignment/small_Formatted_Ortholog_Campy7.alignments', 'r') as inputFile:
+##CALCULATE SEQUENCE SIMILARITY: Find % shared nucleotides
+##########################################################################
+with open('/home/cricket/Projects/Campy_6Strains/Genome_Alignment/Formatted_Ortholog_Campy7.alignments', 'r') as inputFile:
+	o_name = '/home/cricket/Projects/Campy_6Strains/Genome_Alignment/sequenceIdentity.txt'
 
-	lines = inputFile.readlines()
-	for index, line in enumerate(lines):
-		line = line.replace('\n', '')
-		
-		if line.startswith('>'): #Get sequences into dictionary w/ header as key
-			strain = line.rsplit('_')[0].rsplit(':')[2]
-			if strain not in dic:
-				dic[strain] = ''
-			dic[strain] = lines[index+1].replace('\n', '')
-		
-		if len(dic) == 7: #Have all 7 orthologs from each strain, now compare them.
-			oString = ''
-			calculate_sequence_similarity(dic)
-			dic = {} #recycle dictionary
+	try:
+		 os.remove(o_name)
+	except OSError:
+		 pass
 
+	with open('/home/cricket/Projects/Campy_6Strains/Genome_Alignment/sequenceIdentity.txt', 'a') as outputFile:
+		outputFile.write('Ortholog_strain1\tOrtholog_strain2\tortholog_similarity\tRegion_strain1\tRegion_strain2\n')
+
+		lines = inputFile.readlines()
+		for index, line in enumerate(lines):
+			line = line.replace('\n', '')
+			
+			if line.startswith('>'): #Get sequences into dictionary w/ header as key
+				line = line.rsplit('_')[0]
+				if line not in dic:
+					dic[line] = ''
+				dic[line] = lines[index+1].replace('\n', '')
+			
+			if len(dic) == 7: #Have all 7 orthologs from each strain, now compare them.
+				calculate_sequence_similarity(dic, outputFile)
+				dic = {} #recycle dictionary
+#--------------------------------------------------------------------------
