@@ -18,10 +18,10 @@ atgaatcc
 
 import os
 
-##FIND SEQUENCE NAME: Some strains are lacking ortholog. If lacking, header== >0
+##FIND SEQUENCE NAME: Some strains are lacking ortholog. If lacking, header == >0
 ##########################################################################
 def return_strain_name(header):
-	strains = ['Campy1147q', 'Campy1188c', 'Campy1147c', 'Campy3194c', 'Campy14076c', 'Campy1246c', 'Campy1285c']
+	strains = ['Campy1147c', 'Campy1147q', 'Campy1188c', 'Campy1246c', 'Campy1285c', 'Campy14076c',  'Campy3194c']
 	header_strains = ['>0', '>1', '>2', '>3', '>4', '>5', '>6']
 	index = header_strains.index(header)
 	
@@ -38,7 +38,7 @@ def calculate_sequence_similarity(dictionary, f_name):
 		identity = 0
 
 		for i in dictionary:
-			if len(i) == 2:
+			if len(i) == 2: #if strain lacks ortholog, header is only '>X' where X = number from 0-6
 				strain1 = return_strain_name(i)
 				region_strain1 = 'NA'
 
@@ -57,14 +57,12 @@ def calculate_sequence_similarity(dictionary, f_name):
 
 				track = 0
 
-				if len(i) == 2 or len(j) == 2:
+				if len(i) == 2 or len(j) == 2: #if header lacking, strain is lacking ortholog, identity = 0
 					identity = 0
 			
 				else:
-					#if len(dictionary[i]) > len(dictionary[j]):
 					while len(dictionary[j]) < len(dictionary[i]):
 						dictionary[j] = dictionary[j] + '-'
-					#if len(dictionary[j]) > len(dictionary[i]):
 					while len(dictionary[i]) < len(dictionary[j]):
 						dictionary[i] = dictionary[i] + '-'
 
@@ -85,12 +83,12 @@ dic = {}
 with open('/home/cricket/Projects/Campy_6Strains/Genome_Alignment/Formatted_Ortholog_Campy7.alignments', 'r') as inputFile:
 	o_name = '/home/cricket/Projects/Campy_6Strains/Genome_Alignment/sequenceIdentity.txt'
 
-	try:
+	try: #file in append mode, need to delete each time script is run
 		 os.remove(o_name)
 	except OSError:
 		 pass
 
-	with open('/home/cricket/Projects/Campy_6Strains/Genome_Alignment/sequenceIdentity.txt', 'a') as outputFile:
+	with open(o_name, 'a') as outputFile:
 		outputFile.write('Ortholog_strain1\tOrtholog_strain2\tortholog_similarity\tRegion_strain1\tRegion_strain2\n')
 
 		lines = inputFile.readlines()
