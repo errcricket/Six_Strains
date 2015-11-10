@@ -72,6 +72,9 @@ def calculate_sequence_similarity(dictionary, f_name):
 
 					identity = 100*round(track/len(dictionary[i]), 4)
 
+				if i == j:
+					identity = 100.0
+#				if identity != 0: #
 				outputString = strain1 + '\t' + strain2 + '\t' + str(identity) + '\t' + region_strain1 + '\t' + region_strain2 + '\n'
 				f_name.write(outputString)
 #--------------------------------------------------------------------------
