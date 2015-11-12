@@ -57,24 +57,20 @@ def calculate_sequence_similarity(dictionary, f_name):
 
 				track = 0
 
-				if len(i) == 2 or len(j) == 2: #if header lacking, strain is lacking ortholog, identity = 0
-					identity = 0
-			
-				else:
-					while len(dictionary[j]) < len(dictionary[i]):
-						dictionary[j] = dictionary[j] + '-'
-					while len(dictionary[i]) < len(dictionary[j]):
-						dictionary[i] = dictionary[i] + '-'
+				while len(dictionary[j]) < len(dictionary[i]):
+					dictionary[j] = dictionary[j] + '-'
+				while len(dictionary[i]) < len(dictionary[j]):
+					dictionary[i] = dictionary[i] + '-'
 
-					for index, k in enumerate(dictionary[j]):
-						if k == dictionary[i][index]:
-							track+=1
+				for index, k in enumerate(dictionary[j]):
+					if k == dictionary[i][index]:
+						track+=1
 
-					identity = 100*round(track/len(dictionary[i]), 4)
+				identity = 100*round(track/len(dictionary[i]), 4)
 
 				if i == j:
 					identity = 100.0
-#				if identity != 0: #
+
 				outputString = strain1 + '\t' + strain2 + '\t' + str(identity) + '\t' + region_strain1 + '\t' + region_strain2 + '\n'
 				f_name.write(outputString)
 #--------------------------------------------------------------------------
