@@ -147,4 +147,4 @@ with open('Output/Unique_Genes.txt', 'w') as outputFile:
 		outputFile.write('\n\nThe following genes are unique to strain ' + s + '\n')
 		unique_genes = {}
 		unique_genes, uList = find_uniqueGenes(unique_genes, s, strain_order[index+1:], strain_order) #blank after column indicates last entry
-		outputFile.write(str(len(uList)) + str(uList))
+		outputFile.write(str(len(uList)) + ' '  + str(uList))
