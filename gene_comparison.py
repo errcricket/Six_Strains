@@ -36,7 +36,7 @@ def compute_jaccard_index(set_1, set_2):
 campyFile_dic = {} #holds genes for each chromosome & plasmids separately (even if from the same strain)
 strain_dic = {} #holds genes for each strain (plasmid & chromosome collectively)
 
-with open('Output/campy6_corpus_cds.txt', 'r') as inputFile: 
+with open('Output/productSplit_campy6_corpus_cds.txt', 'r') as inputFile: 
 	inputFile.readline()
 	lines = inputFile.readlines()
 
@@ -44,13 +44,13 @@ with open('Output/campy6_corpus_cds.txt', 'r') as inputFile:
 		line = line.replace('\n', '')
 		sLine = line.split('\t')
 
-		if sLine[1] not in strain_dic:
-			strain_dic[sLine[1]] = []
-		strain_dic[sLine[1]].append(sLine[4]) #appends gene product
+		if sLine[2] not in strain_dic:
+			strain_dic[sLine[2]] = []
+		strain_dic[sLine[2]].append(sLine[3]) #appends gene product
 
 		if sLine[0] not in campyFile_dic:
 			campyFile_dic[sLine[0]] = []
-		campyFile_dic[sLine[0]].append(sLine[4]) #appends gene product
+		campyFile_dic[sLine[0]].append(sLine[3]) #appends gene product
 #--------------------------------------------------------------------------
 	
 
