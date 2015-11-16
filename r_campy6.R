@@ -5,6 +5,7 @@ options(warn=1)
 library(ggplot2)
 library(plyr)
 library(data.table)
+library(reshape2)
 
 original.parameters=par()
 options(width=9999)
@@ -13,7 +14,6 @@ myDF <- read.csv('Output/campy6_corpus_cds.txt', header=T, sep='\t')
 #print(names(myDF)) #[1] 'Filename'   'Strain'     'DNA_Source' 'Locus_Tag'  'Product'    'Transl_Tbl' 'Note'       'Seq_AA'     'Protein_ID'
 
 myDF <- myDF[c(1, 3, 2, 5)]
-print(names(myDF))
 myDF <- data.table(myDF) #had factors, not strings?
 
 p <- strsplit(as.character(myDF$Product), split = ',') #split columns w/ multiple products into multiple rows
@@ -28,7 +28,7 @@ myDF$Product <- trim.leading(myDF$Product)
 png(filename=paste('images/Plasmid_Chromo_Histogram.png', sep=''), width=3750,height=2750,res=300)
 par(mar=c(9.5,4.3,4,2))
 print(h <- ggplot(myDF, aes(x=Filename, stat='bin')) + geom_bar() +
-		labs(title='Gene Count by Campy Strain DNA Source', x='Campy. Strain', y='Gene Count\n') +
+		labs(title='Gene Count by Campylobacteria Strain DNA Source', x='Campylobacter Strain', y='Gene Count\n') +
     	guides(title.theme = element_text(size=15, angle = 90)) + theme(legend.text=element_text(size=15), text = element_text(size=18)) +
 		theme(axis.text.x=element_text(angle=45, size=16, hjust=1), axis.text.y=element_text(size=16), legend.position='none', plot.title = element_text(size=22)) )
 ##########################################################################
@@ -47,9 +47,21 @@ print(z <- ggplot(dt, aes(x = Strain, y = countStrain, fill = Filename)) +
 		labs(title='[Gene Count] by Campylobacter Strain (Pangenome)', x='Campylobacter Strains', y='Gene Count\n') +
     	guides(title.theme = element_text(size=15, angle = 90)) + theme(legend.text=element_text(size=15), text = element_text(size=18)) +
 		theme(axis.text.x=element_text(angle=45, size=16, hjust=1), axis.text.y=element_text(size=16), legend.position='none', plot.title = element_text(size=22)) )
+##########################################################################
+
+##PRINT GENE COUNT HEATMAP: Graph depicts contribution of strain's genes from plasmids (if applicable) and chromosomes together 
+#--------------------------------------------------------------------------
+gc <- myDF[, .(geneCount = .N), by = c('Strain', 'Product')][order(Strain, Product)]
+c_all = melt(gc)
+
+png(filename=paste('images/gene_heatMap.png', sep=''), width=3750,height=2750,res=300)
+par(mar=c(9.5,4.3,4,2))
+print(corpus <- qplot(x=Product, y=Strain, data=c_all, fill=value, geom='tile') +
+		scale_fill_gradient(low='deepskyblue4', high='gold', limit=c(0,max(c_all$value)), name='Expression') +
+		labs(title='Gene Comparison Across Campylobacter Strains(Pangenome)', x='Gene Products', y='Strains') +
+		theme(axis.text.x=element_text(angle=90, size=5, hjust=1), axis.text.y=element_text(size=9),  plot.title = element_text(size=22)) )
 
 dev.off()
 ##########################################################################
-
 
 write.table(myDF, file='Output/productSplit_campy6_corpus_cds.txt', quote=F, sep='\t', row.names=F)
