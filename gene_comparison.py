@@ -75,36 +75,37 @@ with open('Output/campy_statistics.txt', 'w') as outputFile:
 ###################################################################################################
 with open('Output/campy_statistics.txt', 'a') as outputFile:
 	outputFile.write('\n\nJACCARD SIMILARITY COEFFICIENT (by chromosome & plasmid)------------------\n')
-#	outputFile.write('Strain1\tStrain2\tJaccard_C\n') #this is for r & will need to be in a separate file
-	#print('set1\tset2\tJaccard Similarity Coefficient')
+	with open('Output/jaccard_statistics.txt', 'a') as J_outputFile:
+		J_outputFile.write('Strain1\tStrain2\tJaccard_C\n') #this is for r & will need to be in a separate file
+		#print('set1\tset2\tJaccard Similarity Coefficient')
 
-	orderString = ''
-	for c in campyFile_dic: #Compute Jaccard Similarity Coefficient across the pangenomes for each strain
-		string = c
-		orderString = orderString + '\t' + c
-		for r in campyFile_dic:
-			jaccard = compute_jaccard_index(set(campyFile_dic[c]), set(campyFile_dic[r]))
-			string = string + '\t' + str(round(jaccard, 3))
-			#outputFile.write(c + '\t' + r + '\t' + str(jaccard) + '\n') #this is for r
-		string = string.lstrip()
-		outputFile.write(string + '\n')
-	outputFile.write(orderString.lstrip() + '\n')
+		orderString = ''
+		for c in campyFile_dic: #Compute Jaccard Similarity Coefficient across the pangenomes for each strain
+			string = c
+			orderString = orderString + '\t' + c
+			for r in campyFile_dic:
+				jaccard = compute_jaccard_index(set(campyFile_dic[c]), set(campyFile_dic[r]))
+				string = string + '\t' + str(round(jaccard, 3))
+				J_outputFile.write(c + '\t' + r + '\t' + str(jaccard) + '\n') #this is for r
+			string = string.lstrip()
+			outputFile.write(string + '\n')
+		outputFile.write(orderString.lstrip() + '\n')
 
-	outputFile.write('\n\nJACCARD SIMILARITY COEFFICIENT (by pangenome)------------------\n')
-#	outputFile.write('Strain1\tStrain2\tJaccard_C\n') #this is for r & will need to be in a separate file
+		outputFile.write('\n\nJACCARD SIMILARITY COEFFICIENT (by pangenome)------------------\n')
+		J_outputFile.write('\nStrain1\tStrain2\tJaccard_C\n') #this is for r & will need to be in a separate file
 
-	orderString = ''
-	for c in strain_dic: #Compute Jaccard Similarity Coefficient for the files (Plasmid/Chrom) are separated)
-		string = c
-		orderString = orderString + '\t' + c
-		for r in strain_dic:
-			jaccard = compute_jaccard_index(set(strain_dic[c]), set(strain_dic[r]))
-			string = string + '\t' + str(round(jaccard, 3))
-			#outputFile.write(c + '\t' + r + '\t' + str(jaccard) + '\n') #this is for r
-		string = string.lstrip()
-		outputFile.write(string + '\n')
-	outputFile.write(orderString.lstrip() + '\n')
-#--------------------------------------------------------------------------
+		orderString = ''
+		for c in strain_dic: #Compute Jaccard Similarity Coefficient for the files (Plasmid/Chrom) are separated)
+			string = c
+			orderString = orderString + '\t' + c
+			for r in strain_dic:
+				jaccard = compute_jaccard_index(set(strain_dic[c]), set(strain_dic[r]))
+				string = string + '\t' + str(round(jaccard, 3))
+				J_outputFile.write(c + '\t' + r + '\t' + str(jaccard) + '\n') #this is for r
+			string = string.lstrip()
+			outputFile.write(string + '\n')
+		outputFile.write(orderString.lstrip() + '\n')
+	#--------------------------------------------------------------------------
 
 
 ###################################################################################################
