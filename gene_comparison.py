@@ -75,8 +75,8 @@ with open('Output/campy_statistics.txt', 'w') as outputFile:
 ###################################################################################################
 with open('Output/campy_statistics.txt', 'a') as outputFile:
 	outputFile.write('\n\nJACCARD SIMILARITY COEFFICIENT (by chromosome & plasmid)------------------\n')
-	with open('Output/jaccard_statistics.txt', 'a') as J_outputFile:
-		J_outputFile.write('Strain1\tStrain2\tJaccard_C\n') #this is for r & will need to be in a separate file
+	with open('Output/jaccard_statistics.txt', 'w') as J_outputFile:
+		#J_outputFile.write('Strain1\tStrain2\tJaccard_C\n') #this is for r & will need to be in a separate file
 		#print('set1\tset2\tJaccard Similarity Coefficient')
 
 		orderString = ''
@@ -86,7 +86,7 @@ with open('Output/campy_statistics.txt', 'a') as outputFile:
 			for r in campyFile_dic:
 				jaccard = compute_jaccard_index(set(campyFile_dic[c]), set(campyFile_dic[r]))
 				string = string + '\t' + str(round(jaccard, 3))
-				J_outputFile.write(c + '\t' + r + '\t' + str(jaccard) + '\n') #this is for r
+				#J_outputFile.write(c + '\t' + r + '\t' + str(jaccard) + '\n') #this is for r
 			string = string.lstrip()
 			outputFile.write(string + '\n')
 		outputFile.write(orderString.lstrip() + '\n')
