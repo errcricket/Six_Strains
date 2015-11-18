@@ -30,7 +30,6 @@ def compute_jaccard_index(set_1, set_2):
     #return round(n / float(len(set_1) + len(set_2) - n), 4)
 #--------------------------------------------------------------------------
 
-
 ##CREATE DICTIONARIES: Will use for all code, includes dictionary for each strain (including plasmids), & for each file (plas-chrom are separate)
 ##########################################################################
 campyFile_dic = {} #holds genes for each chromosome & plasmids separately (even if from the same strain)
@@ -52,7 +51,6 @@ with open('Output/productSplit_campy6_corpus_cds.txt', 'r') as inputFile:
 			campyFile_dic[sLine[0]] = []
 		campyFile_dic[sLine[0]].append(sLine[3]) #appends gene product
 #--------------------------------------------------------------------------
-	
 
 ##CUSORY STATISTICS: Calculate total & unique number of genes (e.g., sets for both strains and files)
 ##########################################################################
@@ -76,11 +74,11 @@ with open('Output/campy_statistics.txt', 'w') as outputFile:
 with open('Output/campy_statistics.txt', 'a') as outputFile:
 	outputFile.write('\n\nJACCARD SIMILARITY COEFFICIENT (by chromosome & plasmid)------------------\n')
 	with open('Output/jaccard_statistics.txt', 'w') as J_outputFile:
-		#J_outputFile.write('Strain1\tStrain2\tJaccard_C\n') #this is for r & will need to be in a separate file
-		#print('set1\tset2\tJaccard Similarity Coefficient')
 
 		orderString = ''
-		for c in campyFile_dic: #Compute Jaccard Similarity Coefficient across the pangenomes for each strain
+
+		strain_files = ['Campy1147c_Chrom', 'Campy1147q_Chrom_1', 'Campy1147q_Chrom_2', 'Campy1147q_Chrom_3', 'Campy1188c_Chrom', 'Campy1188c_Plasmid', 'Campy1246c_Chrom', 'Campy1246c_Plasmid', 'Campy1285c_Chrom', 'Campy14076c_Chrom', 'Campy3194c_Chrom', 'Campy3194c_Plasmid']
+		for c in strain_files: #want output in this order #Compute Jaccard Similarity Coefficient for the files (Plasmid/Chrom) are separated)
 			string = c
 			orderString = orderString + '\t' + c
 			for r in campyFile_dic:
@@ -95,7 +93,9 @@ with open('Output/campy_statistics.txt', 'a') as outputFile:
 		J_outputFile.write('\nStrain1\tStrain2\tJaccard_C\n') #this is for r & will need to be in a separate file
 
 		orderString = ''
-		for c in strain_dic: #Compute Jaccard Similarity Coefficient for the files (Plasmid/Chrom) are separated)
+		strains = ['Campy1147c', 'Campy1147q', 'Campy1188c', 'Campy1246c', 'Campy1285c', 'Campy14076c', 'Campy3194c']
+
+		for c in strains: #want output in this order #Compute Jaccard Similarity Coefficient across the pangenomes for each strain
 			string = c
 			orderString = orderString + '\t' + c
 			for r in strain_dic:
@@ -105,8 +105,7 @@ with open('Output/campy_statistics.txt', 'a') as outputFile:
 			string = string.lstrip()
 			outputFile.write(string + '\n')
 		outputFile.write(orderString.lstrip() + '\n')
-	#--------------------------------------------------------------------------
-
+#--------------------------------------------------------------------------
 
 ###################################################################################################
 ##FIND UNIQUE GENES: #Find genes unique to each strain/file.
