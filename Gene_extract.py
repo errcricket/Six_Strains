@@ -10,6 +10,7 @@ Output: uv_gene.fa
 Working python version: Python 3.4.3 :: Anaconda 2.3.0 (64-bit) :: Biopython 1.6
 '''
 
+
 import Bio
 import os
 from Bio import GenBank
