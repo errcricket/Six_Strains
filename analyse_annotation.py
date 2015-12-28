@@ -21,8 +21,8 @@ from Bio.Seq import Seq
 genome_file = 'Campy3194c/Campy3194c.gb'
 
 #ask user for type (CDS, product, tRNA) in future
-outName = genome_file.replace('.gb', '_analysisOutput.txt')
-unpaired = genome_file.replace('.gb', '_unpairedAnnotations.fasta')
+outName = genome_file.split('/')[1].replace('.gb', '_analysisOutput.txt')
+unpaired = genome_file.split('/')[1].replace('.gb', '_unpairedAnnotations.fasta')
 #--------------------------------------------------------------------------
 
 with open(unpaired, 'w') as unpairedFile: #fasta file for alignment

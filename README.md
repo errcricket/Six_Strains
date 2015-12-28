@@ -63,5 +63,17 @@
 ######**Input**: Alignment tree file (from Mauve) 
 ######**Output**: Campy_tree.png
 
-#####Additional Notes: Python script only seems to work with .gbf extensions (but Mauve needs .gb extension). As it currently stands, the genbank files are downloaded to a directory (of the same name). For this specific project, the files were split up into multiple files if a plasmid was present, or if the genome had not been fully assembled. All text files will be placed in the "**Output**:" directory -- should add code to check for directory, and if not present, creates it. Running Python 2.7.10 : Anaconda 2.3.0 (64-bit). 
+#####Step 11. analyse_annotation.py
+######This script will open/parse genbank files, extract CDS features, and compare (e.g., calculate sequence identity) the amino acid translation to the sliced & translated nucleotide sequence. If a match or close match, the calculated identity, locus_tag, and accession number are written to *_analysisOutput.txt. If a match is not close, the nucleotide slice is written to a fasta file (*_unpairedAnnotations.fasta) where the header is comprised of '> ' + locus_tag. Should add argument calls to script in future.
+######**Input**: Genbank file(s)
+######**Output**: *_analysisOutput.txt, *unpairedAnnotations.fasta 
+
+#####Step 12. annotation_accuracy.R
+######Creates graph of annotation identities to access accuracy of gb file. Should add automated method to label graph in future. The graph may work better as a boxplot.
+######**Input**: *_analysisOutput.txt
+######**Output**: CDSIdentity.png
+
+#####Additional Notes: Python script only seems to work with .gbf extensions (but Mauve needs .gb extension). As it currently stands, the genbank files are downloaded to a directory (of the same name). For this specific project, the files were split up into multiple files if a plasmid was present, or if the genome had not been fully assembled. All text files will be placed in the "**Output**:" directory -- should add code to check for directory, and if not present, creates it. Running Python 2.7.10 : Anaconda 2.3.0 (64-bit) : Biopython 1.6. 
 #####
+
+
