@@ -32,7 +32,7 @@
 ######**Output**: uv_gene.fa
 
 #####Step 6. Align genomes in Mauve using default parameters
-######**Input**: Genebank files (*.gb extension (does not seem to work with *.gbf) 
+######**Input**: Genebank files (*.gb extension (does not seem to work with *.gbf)) 
 ######**Output**: Export alignment file 
 
 #####Step 7. python format_fasta.py
@@ -73,7 +73,7 @@
 ######**Input**: *_analysisOutput.txt
 ######**Output**: CDSIdentity.png
 
-#####Additional Notes: Python script only seems to work with .gbf extensions (but Mauve needs .gb extension). As it currently stands, the genbank files are downloaded to a directory (of the same name). For this specific project, the files were split up into multiple files if a plasmid was present, or if the genome had not been fully assembled. All text files will be placed in the "**Output**:" directory -- should add code to check for directory, and if not present, creates it. Running Python 2.7.10 : Anaconda 2.3.0 (64-bit) : Biopython 1.6. 
+#####Additional Notes: Some Python scripts only seems to work with .gbf extensions (but Mauve needs .gb extension). As it currently stands, the genbank files are downloaded to a directory (of the same name). For this specific project, the files were split up into multiple files if a plasmid was present, or if the genome had not been fully assembled. All text files will be placed in the "**Output**:" directory -- should add code to check for directory, and if not present, creates it. Running Python 2.7.10 : Anaconda 2.3.0 (64-bit) : Biopython 1.6. 
 #####
 
 
