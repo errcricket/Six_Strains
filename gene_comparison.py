@@ -69,6 +69,18 @@ with open('Output/campy_statistics.txt', 'w') as outputFile:
 	#print('\n\n')
 #--------------------------------------------------------------------------
 
+for c in campyFile_dic:
+	print(c)
+
+
+print('')
+for c in strain_dic:
+	print(c)
+
+print('done')
+print('')
+print('')
+
 ##COMPUTING JACCARD COEFFICIENT: Compute Jaccard Similarity Coefficient across each strain pangenome & each entity (plasmid, chromosome)
 ###################################################################################################
 with open('Output/campy_statistics.txt', 'a') as outputFile:
@@ -77,35 +89,42 @@ with open('Output/campy_statistics.txt', 'a') as outputFile:
 
 		orderString = ''
 
-		strain_files = ['Campy1147c_Chrom', 'Campy1147q_Chrom_1', 'Campy1147q_Chrom_2', 'Campy1147q_Chrom_3', 'Campy1188c_Chrom', 'Campy1188c_Plasmid', 'Campy1246c_Chrom', 'Campy1246c_Plasmid', 'Campy1285c_Chrom', 'Campy14076c_Chrom', 'Campy3194c_Chrom', 'Campy3194c_Plasmid']
+		strain_files = ['Campy1147c_Chrom', 'Campy1147q_Chrom_1', 'Campy1147q_Chrom_2', 'Campy1147q_Chrom_3', 'Campy1188c_Chrom', 'Campy1188c_Plasmid', 'Campy1246c_Chrom', 'Campy1246c_Plasmid', 'Campy1285c_Chrom', 'Campy14076c_Chrom', 'Campy3194c_Chrom', 'Campy3194c_Plasmid', 'CP006702_Chrom', 'CP007179_Chrom', 'CP007181_Chrom']
+
 		for c in strain_files: #want output in this order #Compute Jaccard Similarity Coefficient for the files (Plasmid/Chrom) are separated)
 			string = c
 			orderString = orderString + '\t' + c
-			for r in campyFile_dic:
-				jaccard = compute_jaccard_index(set(campyFile_dic[c]), set(campyFile_dic[r]))
+			#print(orderString)
+			for c2 in strain_files: #want output in this order #Compute Jaccard Similarity Coefficient for the files (Plasmid/Chrom) are separated)
+				jaccard = compute_jaccard_index(set(campyFile_dic[c]), set(campyFile_dic[c2]))
 				string = string + '\t' + str(round(jaccard, 3))
-				#J_outputFile.write(c + '\t' + r + '\t' + str(jaccard) + '\n') #this is for r
+
+				#J_outputFile.write(c + '\t' + c2 + '\t' + str(jaccard) + '\n') #this is for r, but only want pangenome
 			string = string.lstrip()
 			outputFile.write(string + '\n')
 		outputFile.write(orderString.lstrip() + '\n')
 
 		outputFile.write('\n\nJACCARD SIMILARITY COEFFICIENT (by pangenome)------------------\n')
-		J_outputFile.write('\nStrain1\tStrain2\tJaccard_C\n') #this is for r & will need to be in a separate file
+		J_outputFile.write('Strain1\tStrain2\tJaccard_C\n') #this is for r & will need to be in a separate file
 
 		orderString = ''
-		strains = ['Campy1147c', 'Campy1147q', 'Campy1188c', 'Campy1246c', 'Campy1285c', 'Campy14076c', 'Campy3194c']
+		strains = ['Campy1147c', 'Campy1147q', 'Campy1188c', 'Campy1246c', 'Campy1285c', 'Campy14076c', 'Campy3194c', 'CampyCP006702', 'CampyCP007179', 'CampyCP007181']
 
 		for c in strains: #want output in this order #Compute Jaccard Similarity Coefficient across the pangenomes for each strain
 			string = c
 			orderString = orderString + '\t' + c
-			for r in strain_dic:
-				jaccard = compute_jaccard_index(set(strain_dic[c]), set(strain_dic[r]))
+			#for r in strain_dic:
+			for c2 in strains: #want output in this order #Compute Jaccard Similarity Coefficient across the pangenomes for each strain
+				print(c, c2)
+				#jaccard = compute_jaccard_index(set(strain_dic[c]), set(strain_dic[r]))
+				jaccard = compute_jaccard_index(set(strain_dic[c]), set(strain_dic[c2]))
 				string = string + '\t' + str(round(jaccard, 3))
-				J_outputFile.write(c + '\t' + r + '\t' + str(jaccard) + '\n') #this is for r
+				J_outputFile.write(c + '\t' + c2 + '\t' + str(jaccard) + '\n') #this is for r
 			string = string.lstrip()
 			outputFile.write(string + '\n')
 		outputFile.write(orderString.lstrip() + '\n')
 #--------------------------------------------------------------------------
+
 
 ###################################################################################################
 ##FIND UNIQUE GENES: #Find genes unique to each strain/file.
@@ -140,7 +159,7 @@ def find_uniqueGenes(dictionary, primaryKey, strainList, completeStrainList):
 	return dictionary, uniqueList
 #--------------------------------------------------------------------------
 		
-strain_order = ['Campy1147q', 'Campy1285c', 'Campy1188c', 'Campy1246c', 'Campy3194c', 'Campy1147c', 'Campy14076c']
+strain_order = ['Campy1147q', 'Campy1285c', 'Campy1188c', 'Campy1246c', 'Campy3194c', 'Campy1147c', 'Campy14076c', 'CampyCP006702', 'CampyCP007179', 'CampyCP007181']
 
 with open('Output/Unique_Genes.txt', 'w') as outputFile:
 	for index, s in enumerate(strain_order):
