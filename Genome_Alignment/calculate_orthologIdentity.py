@@ -21,8 +21,8 @@ import os
 ##FIND SEQUENCE NAME: Some strains are lacking ortholog. If lacking, header == >0
 ##########################################################################
 def return_strain_name(header):
-	strains = ['Campy1147c', 'Campy1147q', 'Campy1188c', 'Campy1246c', 'Campy1285c', 'Campy14076c',  'Campy3194c']
-	header_strains = ['>0', '>1', '>2', '>3', '>4', '>5', '>6']
+	strains = ['Campy1147c', 'Campy1147q', 'Campy1188c', 'Campy1246c', 'Campy1285c', 'Campy14076c',  'Campy3194c', 'CP006702', 'CP007179', 'CP007181', 'PSU1', 'PSU15', 'PSU29', 'PSU31', 'PSU32', 'RM1529']
+	header_strains = ['>0', '>1', '>2', '>3', '>4', '>5', '>6', '>7', '>8', '>9', '>10', '>11', '>12', '>13', '>14', '>15', '>16']
 	index = header_strains.index(header)
 	
 	return strains[index]
@@ -43,7 +43,7 @@ def calculate_sequence_similarity(dictionary, f_name):
 				region_strain1 = 'NA'
 
 			else:
-				strain1= i.rsplit(':')[2]
+				strain1 = i.rsplit(':')[2]
 				region_strain1 = i.rsplit(':')[1]
 
 			for j in dictionary:
@@ -79,7 +79,7 @@ dic = {}
 
 ##CALCULATE SEQUENCE SIMILARITY: Find % shared nucleotides
 ##########################################################################
-with open('/home/cricket/Projects/Campy_6Strains/Genome_Alignment/Formatted_Ortholog_Campy7.alignments', 'r') as inputFile:
+with open('/home/cricket/Projects/Campy_6Strains/Genome_Alignment/Ortholog_Campy16_formatted.alignments', 'r') as inputFile:
 	o_name = '/home/cricket/Projects/Campy_6Strains/Genome_Alignment/sequenceIdentity.txt'
 
 	try: #file in append mode, need to delete each time script is run
