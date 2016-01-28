@@ -47,7 +47,8 @@ png(filename=paste('images/Pangenome_Histogram.png', sep=''), width=3750,height=
 par(mar=c(9.5,4.3,4,2))
 print(z <- ggplot(dt, aes(x = Strain, y = countStrain, fill = Filename)) + 
 		geom_bar(stat = 'identity') + 
-		geom_text(data = dt, aes(x = Strain, y = yval, label = paste(DNA_Source, paste('\n[', countStrain, ']', sep=''),  sep=' '), size=2)) +
+		#geom_text(data = dt, angle=90, aes(x = Strain, y = yval, label = paste(DNA_Source, paste('\n[', countStrain, ']', sep=''),  sep=' '), size=2)) +
+		geom_text(data = dt, angle=90, nudge_y=50, aes(x = Strain, y = yval, label = paste(DNA_Source, paste('\n[', countStrain, ']', sep=''),  sep=' '), label_size=2)) +
 		labs(title='[Gene Count] by Campylobacter Strain (Pangenome)', x='Campylobacter Strains', y='Gene Count\n') +
     	guides(title.theme = element_text(size=15, angle = 90)) + theme(legend.text=element_text(size=15), text = element_text(size=18)) +
 		theme(axis.text.x=element_text(angle=45, size=16, hjust=1), axis.text.y=element_text(size=16), legend.position='none', plot.title = element_text(size=22)) )
