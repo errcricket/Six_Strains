@@ -25,11 +25,16 @@ def strip_it(string_name):
 
 
 ###############################################File List & Searchable Qualifiers###################################################
-fileList = ['Campy1147c/Campy1147c_Chrom.gbf', 'Campy1147q/Campy1147q_Chrom_1.gbf', 'Campy1147q/Campy1147q_Chrom_2.gbf', 'Campy1147q/Campy1147q_Chrom_3.gbf', 'Campy1188c/Campy1188c_Chrom.gbf', 'Campy1188c/Campy1188c_Plasmid.gbf', 'Campy1246c/Campy1246c_Chrom.gbf', 'Campy1246c/Campy1246c_Plasmid.gbf', 'Campy1285c/Campy1285c_Chrom.gbf', 'Campy14076c/Campy14076c_Chrom.gbf', 'Campy3194c/Campy3194c_Chrom.gbf', 'Campy3194c/Campy3194c_Plasmid.gbf', 'CampyCP006702/CP006702_Chrom.gb', 'CampyCP007179/CP007179_Chrom.gb', 'CampyCP007181/CP007181_Chrom.gb', 'CampyPSU1/PSU1.gbk', 'CampyPSU15/PSU15.gbk', 'CampyPSU29/PSU29.gbk', 'CampyPSU31/PSU31.gbk', 'CampyPSU32/PSU32.gbk', 'CampyRM1529/RM1529.gbk']
+fileList = []
 
+with open('fileList.txt', 'r') as inputFile:
+	for i in inputFile.readlines():
+		i = i.replace('\n', '')
+		fileList.append(i)
+
+textList = [] #will contain list of text files (same as fileList, but .txt extension)
 qualies = ['locus_tag', 'product', 'transl_table', 'note', 'translation', 'protein_id']
 #---------------------------------------------------------------------------------------------------------------------------------
-
 
 ############################Searchable Genbank Files & write qualifying features to output file####################################
 for f in fileList:
@@ -39,6 +44,7 @@ for f in fileList:
 	dna_type = ''
 
 	nameOut = f.replace(extension, '.txt')
+	textList.append(nameOut) #add to list for 
 	file_name = f.split('/')[1].replace(extension, '')
 
 	if extension == '.gbk':
@@ -58,7 +64,6 @@ for f in fileList:
 	with open(f, 'r') as handle:
 		with open(nameOut, 'w') as outputFile:
 			outputFile.write('\t'.join(['Filename', 'Strain', 'DNA_Source', 'Locus_Tag', 'Product', 'Transl_Tbl', 'Note', 'Seq_AA', 'Protein_ID']) + '\n')
-											#[1] 'Filename'   'Strain' 'DNA_Source' 'Locus_Tag'  'Product'  'Transl_Tbl'  'Note'  'Seq_AA'  'Protein_ID'
 
 			for record in SeqIO.parse(handle, 'genbank'):
 				for feature in record.features:
@@ -70,7 +75,7 @@ for f in fileList:
 							cds_dic[f] = {'filename':f, 'strain':strain, 'DNA_Source':dna_type, 'locus_tag':'NA', 'product':'NA', 'protein_id':'NA', 'note':'NA', 'transl_table':'NA', 'translation':'NA'}
 						for q in qualies:
 							if q == 'product':
-								cds_dic[f][q] = str(feature.qualifiers.get(q)).lower()
+								cds_dic[f][q] = str(feature.qualifiers.get(q)).lower() #change case (will be needed later to find unique gene products)
 							else:
 								cds_dic[f][q] = str(feature.qualifiers.get(q))
 
@@ -83,9 +88,8 @@ for f in fileList:
 ############################Create Corpus File (from individual text files)####################################
 with open('Output/campy6_corpus_cds.txt', 'w') as outputFile:
 	outputFile.write('\t'.join(['Filename', 'Strain', 'DNA_Source', 'Locus_Tag', 'Product', 'Transl_Tbl', 'Note', 'Seq_AA', 'Protein_ID']) + '\n')
-	fileList = ['Campy1147c/Campy1147c_Chrom.txt', 'Campy1147q/Campy1147q_Chrom_1.txt', 'Campy1147q/Campy1147q_Chrom_2.txt', 'Campy1147q/Campy1147q_Chrom_3.txt', 'Campy1188c/Campy1188c_Chrom.txt', 'Campy1188c/Campy1188c_Plasmid.txt', 'Campy1246c/Campy1246c_Chrom.txt', 'Campy1246c/Campy1246c_Plasmid.txt', 'Campy1285c/Campy1285c_Chrom.txt', 'Campy14076c/Campy14076c_Chrom.txt', 'Campy3194c/Campy3194c_Chrom.txt', 'Campy3194c/Campy3194c_Plasmid.txt', 'CampyCP006702/CP006702_Chrom.txt', 'CampyCP007179/CP007179_Chrom.txt', 'CampyCP007181/CP007181_Chrom.txt', 'CampyPSU1/PSU1.txt', 'CampyPSU15/PSU15.txt', 'CampyPSU29/PSU29.txt', 'CampyPSU31/PSU31.txt', 'CampyPSU32/PSU32.txt', 'CampyRM1529/RM1529.txt']
-	for f in fileList:
-		with open(f, 'r') as inputFile:
+	for t in textList:
+		with open(t, 'r') as inputFile:
 			inputFile.readline() #skip writing first line
 			lines = inputFile.readlines()
 			for line in lines:	
